@@ -1,3 +1,16 @@
-<p>
-  project-list works!
-</p>
+<div class="row">
+	<div class="col-xs-12">
+		<button class="btn btn-success" (click)="onNewProject()">New Project</button>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-xs-12">
+		<app-project-item 
+		*ngFor="let projectEl of projects; let i=index" 
+		[project]="projectEl"
+		[index]="i">
+		<!-- (recipeSelected)="onRecipeDetails(recipeEl)"> -->
+		</app-project-item>
+	</div>
+</div>

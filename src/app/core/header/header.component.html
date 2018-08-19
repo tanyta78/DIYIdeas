@@ -7,7 +7,7 @@
     <ul class="nav navbar-nav">
       <li routerLinkActive="active"><a routerLink="/projects">Projects</a></li>
       <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
-      <li routerLinkActive="active"><a routerLink="/admin" [ngIf]="isAdmin()">Admin panel</a></li>
+      <li routerLinkActive="active" ><a routerLink="/admin" *ngIf ="isAdmin()" >Admin panel</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <ng-template [ngIf]="!isAuthenticated()">
@@ -18,8 +18,8 @@
               <a routerLink="/signin">Login</a>
             </li>
       </ng-template>
-      <li>
-          <a style="cursor: pointer;" (click)="onLogout()" *ngIf="isAuthenticated()">Logout</a>
+      <li >
+          <a style="cursor: pointer;" (click)="onLogout()" *ngIf="isAuthenticated()" >Logout</a>
       </li>
       <li class="dropdown" appDropdown *ngIf="isAuthenticated()">
         <a style="cursor: pointer;" class="dropdown-toggle">Manage <span class="caret"></span></a>

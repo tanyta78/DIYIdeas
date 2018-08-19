@@ -10,7 +10,8 @@ import { ProjectEditComponent } from "./project-edit/project-edit.component";
 const projectsRoutes: Routes = [
 	{ path: '', component: ProjectsComponent ,children:[
 		{ path: '', component: ProjectStartComponent },
-		{ path: 'new', component: ProjectStartComponent, canActivate: [AuthGuard] },
+		{ path: 'new', component: ProjectEditComponent, canActivate: [AuthGuard] 
+	},
 		{ path: ':id', component: ProjectDetailComponent },
 		{ path: ':id/edit', component: ProjectEditComponent, canActivate: [AuthGuard] }
 ]}];

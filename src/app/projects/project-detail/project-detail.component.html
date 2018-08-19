@@ -1,3 +1,47 @@
-<p>
-  project-detail works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <img [src]="currentProject.imageUrl" alt="{{currentProject.name}}" class="img-rensponsive">
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{currentProject.name}}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div 
+      class="btn-group"
+      appDropdown>
+      <button type="button" class="btn btn-primary dropdown-toggle">Manage Project
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a (click)="onAddToShoppingList()" style="cursor: pointer;">To Shopping List</a>
+        </li>
+        <ng-template *ngIf = isAuthor()>
+          <li>
+            <a style="cursor: pointer;" (click)="onEditProject()">Edit Project</a>
+          </li>
+          <li>
+            <a style="cursor: pointer;" (click)="onDeleteProject()">Delete Project</a>
+          </li>
+        </ng-template>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">Description: {{currentProject.description}}</div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ingredient of currentProject.ingredients">
+          {{ingredient.name}} - {{ingredient.amount}}
+        </li>
+      </ul>
+    </div>
+  </div>

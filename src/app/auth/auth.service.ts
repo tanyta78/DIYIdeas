@@ -1,21 +1,27 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
 	token: string;
 
-	constructor(private router: Router) { }
+	constructor(
+		private toastr: ToastrService,
+		private router: Router) { }
 
 	signupUser(email: string, password: string) {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(data => {
 				// TODO: add user model fields and create new user in users db
-				console.log(data)
+				this.toastr.success('Signed Up', 'Success');
+				
+				this.router.navigate(['/signin']);
 			})
-			.catch(
-				error => console.log(error)
+			.catch((err)=>
+				this.toastr.error(err.message, 'Warning')
+
 			);
 	}
 
@@ -24,18 +30,22 @@ export class AuthService {
 			.then(res => {
 				this.router.navigate(['/']);
 				firebase.auth().currentUser.getIdToken()
-					.then(
-						(token: string) => this.token = token
-					)
+					.then((token: string) => {
+						this.token = token;
+						console.log(this.token)
+					this.toastr.success('Logged In', 'Success');
+					})
+					
 			})
 			.catch(
-				error => console.log(error)
-			);
+				(err) => {
+					this.toastr.error(err.message, 'Warning');
+				  });
 	}
 
 	logout() {
 		firebase.auth().signOut();
-		this.token = null;
+		this.token = null;		
 	}
 
 	getToken() {
@@ -47,7 +57,7 @@ export class AuthService {
 		return this.token;
 	}
 
-	isAuthenticated() {
+	isAuthenticated():boolean {
 		return this.token != null;
 	}
 

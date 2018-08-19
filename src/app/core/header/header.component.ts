@@ -18,10 +18,12 @@ export class HeaderComponent implements OnInit {
   }
 
   isAuthenticated() {
-    return this.authService.isAuthenticated();
+    // return true;
+     return this.authService.isAuthenticated();
   }
 
   isAdmin() {
-    return this.authService.isAdmin();
+    // return true;
+     return this.authService.isAdmin();
   }
 }
