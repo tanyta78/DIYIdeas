@@ -1,3 +1,36 @@
-<p>
-  header works!
-</p>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a routerLink="/" class="navbar-brand"> DIY Ideas</a>
+    </div>
+  <div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active"><a routerLink="/projects">Projects</a></li>
+      <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
+      <li routerLinkActive="active"><a routerLink="/admin" [ngIf]="isAdmin()">Admin panel</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <ng-template [ngIf]="!isAuthenticated()">
+          <li>
+              <a routerLink="/signup">Register</a>
+            </li>
+            <li>
+              <a routerLink="/signin">Login</a>
+            </li>
+      </ng-template>
+      <li>
+          <a style="cursor: pointer;" (click)="onLogout()" *ngIf="isAuthenticated()">Logout</a>
+      </li>
+      <li class="dropdown" appDropdown *ngIf="isAuthenticated()">
+        <a style="cursor: pointer;" class="dropdown-toggle">Manage <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li> <a routerLink="/profile">My Profile</a></li>
+          <li> <a routerLink="/projects/my">My projects</a></li>
+          <li> <a routerLink="/projects/favorite">Favorite projects</a></li>
+          <li></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  </div>
+</nav>
