@@ -1,23 +1,24 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from "../auth/auth-guard.service";
-import { ProjectsComponent } from "./projects.component";
-import { ProjectStartComponent } from "./project-start/project-start.component";
-import { ProjectDetailComponent } from "./project-detail/project-detail.component";
-import { ProjectEditComponent } from "./project-edit/project-edit.component";
+import { ProjectsComponent } from './projects.component';
+import { ProjectStartComponent } from './project-start/project-start.component';
+import { ProjectEditComponent } from './project-edit/project-edit.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { AuthGuard } from '../auth/auth-guard.service';
 
-const projectsRoutes: Routes = [
-	{ path: '', component: ProjectsComponent ,children:[
+const projectsRoutes:Routes = [
+  { path: '', component: ProjectsComponent ,children:[
 		{ path: '', component: ProjectStartComponent },
-		{ path: 'new', component: ProjectEditComponent, canActivate: [AuthGuard] 
-	},
+		{ path: 'new', component: ProjectEditComponent, canActivate: [AuthGuard] },
 		{ path: ':id', component: ProjectDetailComponent },
 		{ path: ':id/edit', component: ProjectEditComponent, canActivate: [AuthGuard] }
 ]}];
 
 @NgModule({
-	imports: [RouterModule.forChild(projectsRoutes)],
-	exports: [RouterModule]
+  imports: [
+    RouterModule.forChild(projectsRoutes)
+  ],
+  exports: [RouterModule]
 })
 export class ProjectsRoutingModule { }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import * as firebase from 'firebase';
-
 import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { DataStorageService } from '../../shared/data-storage.service';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'app-project-detail',
@@ -12,49 +12,44 @@ import { ProjectService } from '../project.service';
 })
 export class ProjectDetailComponent implements OnInit {
   currentProject: Project;
-  id: number;
+  id:number;
 
   constructor(
     private projectService: ProjectService,
+    private dataStorageService: DataStorageService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.route.params
-    .subscribe(
-      (params:Params)=>{
+      .subscribe((params:Params)=>{
         this.id=+params['id'];
-        this.currentProject= this.projectService.getProject(this.id);
+        this.currentProject = this.projectService.getProject(this.id);
+      })
+  }
+
+  onAddToShoppingList(){
+		this.projectService.addIngredientsToShoppingList(this.currentProject.ingredients);
+	}
+
+  onEditProject(){
+    this.router.navigate(['edit'],{relativeTo:this.route});
+  }
+
+  onDeleteProject(){
+    this.projectService.deleteProject(this.id);
+    // this.projectService.deleteProjectOnDatabase(this.id).subscribe((r) => {
+    //   this.dataStorageService.storeProjects();
+    //   this.router.navigate(['/projects']);
+    
+    //  })
+    this.dataStorageService.storeProjects().subscribe(
+      (res: Response) => {
+        console.log(res);
+        this.router.navigate(['/projects']);
       }
     );
-  }
-
-  onAddToShoppingList() {
-    this.projectService.addIngredientsToShoppingList(this.currentProject.ingredients);
-  }
-
-  onEditProject() {
-    this.router.navigate(['edit'], { relativeTo: this.route });
-    //		this.router.navigate(['../',this.id,'edit'],{relativeTo:this.route});
-
-  }
-
-  onDeleteProject() {
-    this.projectService.deleteProject(this.id)
-      this.router.navigate(['/projects']);
-    
    
-  }
-
-  isAuthor() {
-     return true;
-
-    // firebase.auth().currentUser.getIdTokenResult().then(
-    //   userId => {
-    //     return this.currentProject.authorId === userId;
-    //   }
-    // )
-  }
-
-
+    }
 }

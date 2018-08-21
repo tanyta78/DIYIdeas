@@ -1,27 +1,20 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase';
-import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
 	token: string;
+	isAdmin: boolean = false;
+	uid : string ;
 
-	constructor(
-		private toastr: ToastrService,
-		private router: Router) { }
+	constructor(private router: Router) { }
 
 	signupUser(email: string, password: string) {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then(data => {
-				// TODO: add user model fields and create new user in users db
-				this.toastr.success('Signed Up', 'Success');
-				
-				this.router.navigate(['/signin']);
-			})
-			.catch((err)=>
-				this.toastr.error(err.message, 'Warning')
-
+			.then(data => console.log(data))
+			.catch(
+				error => console.log(error)
 			);
 	}
 
@@ -29,23 +22,21 @@ export class AuthService {
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(res => {
 				this.router.navigate(['/']);
+				this.uid = res.user.uid;
+				console.log(res.user);
 				firebase.auth().currentUser.getIdToken()
-					.then((token: string) => {
-						this.token = token;
-						console.log(this.token)
-					this.toastr.success('Logged In', 'Success');
-					})
-					
+					.then(
+						(token: string) => this.token = token
+					)
 			})
 			.catch(
-				(err) => {
-					this.toastr.error(err.message, 'Warning');
-				  });
+				error => console.log(error)
+			);
 	}
 
 	logout() {
 		firebase.auth().signOut();
-		this.token = null;		
+		this.token = null;
 	}
 
 	getToken() {
@@ -57,26 +48,26 @@ export class AuthService {
 		return this.token;
 	}
 
-	isAuthenticated():boolean {
+	isAuthenticated() {
 		return this.token != null;
 	}
 
-	isAdmin() {
-		if (!this.isAuthenticated()) {
-			return false;
-		}
-		firebase.auth().currentUser.getIdTokenResult()
-			.then((idTokenResult) => {
-				// Confirm the user is an Admin.
-				if (!!idTokenResult.claims.admin) {
-					return true;
-				} else {
-					return false;
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+	// isAdmin(){
+	// 	if (!this.isAuthenticated()) {
+	// 		return false;
+	// 	}
+	// 	firebase.auth().currentUser.getIdTokenResult()
+	// 		.then((idTokenResult) => {
+	// 			// Confirm the user is an Admin.
+	// 			if (!!idTokenResult.claims.admin) {
+	// 				return true;
+	// 			} else {
+	// 				return false;
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
 
-	}
+	// }
 }

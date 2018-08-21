@@ -20,15 +20,12 @@
         <li>
           <a (click)="onAddToShoppingList()" style="cursor: pointer;">To Shopping List</a>
         </li>
-        <ng-template *ngIf = isAuthor()>
-          <li>
-            <a style="cursor: pointer;" (click)="onEditProject()">Edit Project</a>
-          </li>
-          <li>
-            <a style="cursor: pointer;" (click)="onDeleteProject()">Delete Project</a>
-          </li>
-        </ng-template>
-        
+        <li>
+          <a style="cursor: pointer;" (click)="onEditProject()">Edit Project</a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="onDeleteProject()">Delete Project</a>
+        </li>
       </ul>
     </div>
   </div>

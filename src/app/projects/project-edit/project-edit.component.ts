@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
+
 
 @Component({
   selector: 'app-project-edit',
@@ -16,9 +16,10 @@ export class ProjectEditComponent implements OnInit {
   projectForm: FormGroup;
 
   constructor(
-    private route: ActivatedRoute,
-    private projectService: ProjectService,
-    private router: Router) { }
+    private route: ActivatedRoute, 
+    private projectService: ProjectService, 
+    private router: Router,
+   ) { }
 
   ngOnInit() {
     this.route.params
@@ -36,16 +37,22 @@ export class ProjectEditComponent implements OnInit {
       this.projectForm.value['imageUrl'],
       this.projectForm.value['ingredients']
     );
-    //can use only value because of equal names - use this in additing new Project
+    //can use only value because of equal names - use this in additing new project
 
     if (this.editMode) {
       this.projectService.updateProject(this.id, newProject);
+      this.projectService.editProjectOnDatabase(this.id, newProject) .subscribe((r) => {
+        console.log(r)
+         this.onCancel();
+       })
     } else {
       this.projectService.addProject(this.projectForm.value);
+      this.projectService.addProjectToDatabase(newProject) .subscribe((r) => {
+       console.log(r)
+        this.onCancel();
+      })
     }
 
-    //to navigate
-    this.onCancel();
   }
 
   onAddIngredient() {
@@ -70,40 +77,36 @@ export class ProjectEditComponent implements OnInit {
     return (<FormArray>this.projectForm.get('ingredients')).controls;
   }
 
-  private initForm() {
-    let projectName = '';
-    let projectImageUrl = '';
+  private initForm(){
+    let projectName='';
+    let projectImageUrl='';
     let projectDescription = '';
-    let projectIngredients = new FormArray([]);
+    let projectIngredients = new FormArray ([]);
 
-    if (this.editMode) {
+    if(this.editMode){
       const project = this.projectService.getProject(this.id);
-
-      projectName = project.name;
-      projectImageUrl = project.imageUrl;
-      projectDescription = project.description;
-      if (project['ingredients']) {
+      projectName=project.name;
+      projectImageUrl=project.imageUrl;
+      projectDescription=project.description;
+      if(project['ingredients']){
         for (const ing of project.ingredients) {
           projectIngredients.push(
             new FormGroup({
-              name: new FormControl(ing.name, Validators.required),
-              amount: new FormControl(ing.amount, [Validators.required,
+              name:new FormControl(ing.name,Validators.required),
+              amount:new FormControl(ing.amount,[Validators.required,
               Validators.pattern(/^(?:[1-9]\d*|0)?(?:\.\d+)?$/)])
             })
           );
         }
-      };
-
+      }
     }
 
     this.projectForm = new FormGroup({
-      'name': new FormControl(projectName, Validators.required),
-      'imageUrl': new FormControl(projectImageUrl, Validators.required),
-      'description': new FormControl(projectDescription, Validators.required),
+      'name': new FormControl(projectName,Validators.required),
+      'imageUrl': new FormControl(projectImageUrl,Validators.required),
+      'description':new FormControl(projectDescription, Validators.required),
       'ingredients': projectIngredients
     });
   }
-
-
 
 }

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Response } from '@angular/http';
+
+import { DataStorageService } from '../../shared/data-storage.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -6,11 +9,23 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  constructor(private authService:AuthService) { }
+  constructor(
+    private dataStorageService: DataStorageService,
+    private authService: AuthService) { }
 
-  ngOnInit() {
+  onSaveData() {
+    this.dataStorageService.storeProjects()
+      .subscribe(
+        (res: Response) => {
+          console.log(res);
+        }
+      );
+  }
+
+  onFetchData() {
+    this.dataStorageService.getProjects();
   }
 
   onLogout(){
@@ -18,12 +33,11 @@ export class HeaderComponent implements OnInit {
   }
 
   isAuthenticated() {
-    // return true;
-     return this.authService.isAuthenticated();
+    return this.authService.isAuthenticated();
   }
 
   isAdmin() {
-    // return true;
-     return this.authService.isAdmin();
+     return true;
+     //return this.authService.isAdmin();
   }
 }
