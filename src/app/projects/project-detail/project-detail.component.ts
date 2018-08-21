@@ -3,7 +3,8 @@ import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DataStorageService } from '../../shared/data-storage.service';
-import { Response } from '@angular/http';
+
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -12,10 +13,11 @@ import { Response } from '@angular/http';
 })
 export class ProjectDetailComponent implements OnInit {
   currentProject: Project;
-  id:number;
+  id: number;
 
   constructor(
     private projectService: ProjectService,
+    private authService: AuthService,
     private dataStorageService: DataStorageService,
     private route: ActivatedRoute,
     private router: Router
@@ -23,33 +25,29 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-      .subscribe((params:Params)=>{
-        this.id=+params['id'];
+      .subscribe((params: Params) => {
+        this.id = +params['id'];
         this.currentProject = this.projectService.getProject(this.id);
       })
   }
 
-  onAddToShoppingList(){
-		this.projectService.addIngredientsToShoppingList(this.currentProject.ingredients);
-	}
-
-  onEditProject(){
-    this.router.navigate(['edit'],{relativeTo:this.route});
+  onAddToShoppingList() {
+    this.projectService.addIngredientsToShoppingList(this.currentProject.ingredients);
   }
 
-  onDeleteProject(){
-    this.projectService.deleteProject(this.id);
-    // this.projectService.deleteProjectOnDatabase(this.id).subscribe((r) => {
-    //   this.dataStorageService.storeProjects();
-    //   this.router.navigate(['/projects']);
-    
-    //  })
-    this.dataStorageService.storeProjects().subscribe(
-      (res: Response) => {
-        console.log(res);
-        this.router.navigate(['/projects']);
-      }
-    );
-   
-    }
+  onEditProject() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+
+  onDeleteProject() {
+    this.router.navigate(['delete'], { relativeTo: this.route });
+  }
+
+  isAuthor() {
+    if (this.currentProject.authorId && this.currentProject.authorId === this.authService.uid) {
+      return true;
+    } else {
+      return this.authService.isAdmin;
+    };
+  }
 }

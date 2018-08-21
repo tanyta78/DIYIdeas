@@ -12,7 +12,10 @@ export class AuthService {
 
 	signupUser(email: string, password: string) {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then(data => console.log(data))
+			.then(data => {
+				console.log(data);
+				
+			})
 			.catch(
 				error => console.log(error)
 			);
@@ -37,6 +40,7 @@ export class AuthService {
 	logout() {
 		firebase.auth().signOut();
 		this.token = null;
+		this.router.navigate(['/']);
 	}
 
 	getToken() {

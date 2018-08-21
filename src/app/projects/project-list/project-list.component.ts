@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DataStorageService } from '../../shared/data-storage.service';
 
 @Component({
   selector: 'app-project-list',
@@ -14,7 +15,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   subscription:Subscription;
   projects:Project[];
 
-  constructor(private projectService: ProjectService,
+  constructor(
+    private projectService: ProjectService,
+    private dataStorageServise: DataStorageService,
 		private router: Router,
 		private route: ActivatedRoute) { }
 
@@ -25,7 +28,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.projects = this.projectService.getProjects();
+    this.dataStorageServise.getProjects();
+    this.projects=this.projectService.getProjects();
   }
 
   onNewProject() {

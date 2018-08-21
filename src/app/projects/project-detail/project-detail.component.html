@@ -21,10 +21,10 @@
           <a (click)="onAddToShoppingList()" style="cursor: pointer;">To Shopping List</a>
         </li>
         <li>
-          <a style="cursor: pointer;" (click)="onEditProject()">Edit Project</a>
+          <a style="cursor: pointer;" (click)="onEditProject()" *ngIf="isAuthor()">Edit Project</a>
         </li>
         <li>
-          <a style="cursor: pointer;" (click)="onDeleteProject()">Delete Project</a>
+          <a style="cursor: pointer;" (click)="onDeleteProject()" *ngIf="isAuthor()">Delete Project</a>
         </li>
       </ul>
     </div>

@@ -3,6 +3,9 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
+import { AuthService } from '../../auth/auth.service';
+import { DataStorageService } from '../../shared/data-storage.service';
+import { Response } from '@angular/http';
 
 
 @Component({
@@ -12,20 +15,32 @@ import { Project } from '../project.model';
 })
 export class ProjectEditComponent implements OnInit {
   id: number;
-  editMode = false;
+  submitButtonText: string = 'Save';
+  editMode:boolean= false;
+  deleteMode:boolean= false;
   projectForm: FormGroup;
 
   constructor(
-    private route: ActivatedRoute, 
-    private projectService: ProjectService, 
+    private route: ActivatedRoute,
+    private projectService: ProjectService,
+    private authService: AuthService,
+    private dataStorageService: DataStorageService,
     private router: Router,
-   ) { }
+  ) { }
 
   ngOnInit() {
     this.route.params
       .subscribe((params: Params) => {
         this.id = +params['id'];
         this.editMode = params['id'] != null;
+        if (this.route.snapshot.url[1]) {
+          this.deleteMode = this.route.snapshot.url[1].path == "delete"
+        };
+        if (this.deleteMode) {
+          this.submitButtonText = 'Delete'
+        }else if(this.editMode){
+          this.submitButtonText = 'Edit'
+        }
         this.initForm();
       });
   }
@@ -35,20 +50,34 @@ export class ProjectEditComponent implements OnInit {
       this.projectForm.value['name'],
       this.projectForm.value['description'],
       this.projectForm.value['imageUrl'],
-      this.projectForm.value['ingredients']
+      this.projectForm.value['ingredients'],
+      this.authService.uid
     );
     //can use only value because of equal names - use this in additing new project
+    if (this.deleteMode) {
+      this.projectService.deleteProject(this.id);
+      // this.projectService.deleteProjectOnDatabase(this.id).subscribe((r) => {
+      //   this.dataStorageService.storeProjects();
+      //   this.router.navigate(['/projects']);
 
-    if (this.editMode) {
+      //  })
+      this.dataStorageService.storeProjects().subscribe(
+        (res: Response) => {
+          console.log(res);
+          this.router.navigate(['/projects']);
+         // this.onCancel();
+        }
+      );
+    } else if (this.editMode) {
       this.projectService.updateProject(this.id, newProject);
-      this.projectService.editProjectOnDatabase(this.id, newProject) .subscribe((r) => {
+      this.projectService.editProjectOnDatabase(this.id, newProject).subscribe((r) => {
         console.log(r)
-         this.onCancel();
-       })
+        this.onCancel();
+      })
     } else {
-      this.projectService.addProject(this.projectForm.value);
-      this.projectService.addProjectToDatabase(newProject) .subscribe((r) => {
-       console.log(r)
+      this.projectService.addProject(newProject);
+      this.projectService.addProjectToDatabase(newProject).subscribe((r) => {
+        console.log(r)
         this.onCancel();
       })
     }
@@ -77,23 +106,23 @@ export class ProjectEditComponent implements OnInit {
     return (<FormArray>this.projectForm.get('ingredients')).controls;
   }
 
-  private initForm(){
-    let projectName='';
-    let projectImageUrl='';
+  private initForm() {
+    let projectName = '';
+    let projectImageUrl = '';
     let projectDescription = '';
-    let projectIngredients = new FormArray ([]);
+    let projectIngredients = new FormArray([]);
 
-    if(this.editMode){
+    if (this.editMode || this.deleteMode) {
       const project = this.projectService.getProject(this.id);
-      projectName=project.name;
-      projectImageUrl=project.imageUrl;
-      projectDescription=project.description;
-      if(project['ingredients']){
+      projectName = project.name;
+      projectImageUrl = project.imageUrl;
+      projectDescription = project.description;
+      if (project['ingredients']) {
         for (const ing of project.ingredients) {
           projectIngredients.push(
             new FormGroup({
-              name:new FormControl(ing.name,Validators.required),
-              amount:new FormControl(ing.amount,[Validators.required,
+              name: new FormControl(ing.name, Validators.required),
+              amount: new FormControl(ing.amount, [Validators.required,
               Validators.pattern(/^(?:[1-9]\d*|0)?(?:\.\d+)?$/)])
             })
           );
@@ -102,9 +131,9 @@ export class ProjectEditComponent implements OnInit {
     }
 
     this.projectForm = new FormGroup({
-      'name': new FormControl(projectName,Validators.required),
-      'imageUrl': new FormControl(projectImageUrl,Validators.required),
-      'description':new FormControl(projectDescription, Validators.required),
+      'name': new FormControl(projectName, Validators.required),
+      'imageUrl': new FormControl(projectImageUrl, Validators.required),
+      'description': new FormControl(projectDescription, Validators.required),
       'ingredients': projectIngredients
     });
   }

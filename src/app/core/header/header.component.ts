@@ -37,7 +37,7 @@ export class HeaderComponent {
   }
 
   isAdmin() {
-     return true;
-     //return this.authService.isAdmin();
+    // return true;
+     return this.authService.isAdmin;
   }
 }
