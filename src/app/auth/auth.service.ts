@@ -6,12 +6,15 @@ import { UserService } from "../admin/user.service";
 @Injectable()
 export class AuthService {
 	token: string;
-	isAdmin: boolean = false;
+	//isAdmin: boolean = false;
+	isAdmin: boolean = true;
+
 	uid: string;
 
 	constructor(
 		private router: Router,
-		private userService: UserService) { }
+	//	private userService: UserService
+	) { }
 
 	signupUser(email: string, password: string) {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -29,7 +32,7 @@ export class AuthService {
 			.then(res => {
 				this.router.navigate(['/']);
 				this.uid = res.user.uid;
-				this.isAdminUser(this.uid);
+				//this.isAdminUser(this.uid);
 				console.log(res.user);
 				firebase.auth().currentUser.getIdToken()
 					.then(
@@ -60,12 +63,12 @@ export class AuthService {
 		return this.token != null;
 	}
 
-	isAdminUser(userId: string) {
-		this.userService.getById(userId).subscribe(
-			(data) => {
-				this.isAdmin = data.json().role === 'admin' ? true : false;
-			}
-		)
+	// isAdminUser(userId: string) {
+	// 	this.userService.getById(userId).subscribe(
+	// 		(data) => {
+	// 			this.isAdmin = data.json().role === 'admin' ? true : false;
+	// 		}
+	// 	)
 
-	}
+	// }
 }

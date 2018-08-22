@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class UserListComponent implements OnInit,OnDestroy {
   subscription: Subscription;
-  users: User[];
+  users: User [];
 
   constructor(
     private userService: UserService,
@@ -25,12 +25,12 @@ export class UserListComponent implements OnInit,OnDestroy {
       }
     );
 
-    this.userService.getAllUsers().subscribe(
-      data => this.users = data as User[]
-    );
+    this.userService.getAllUsers().subscribe(data=>{
+     this.users=data as User[];
+    });
   }
 
-  onNewProject() {
+  onNewUser() {
 		this.router.navigate(['new'],{relativeTo:this.route});
 	}
 

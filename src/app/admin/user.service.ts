@@ -22,14 +22,16 @@ export class UserService {
   getAllUsers() {
     return this.http.get(`${baseUrl}/.json`)
       .pipe(map((res : Response) => {
-        const ids = Object.keys(res);
+        
+        const userDb = res.json();
+        const ids = Object.keys(res.json());
         const users : User[] = [];
         for (const i of ids) {
-          users.push(new User(i, res[i].email, 
-            res[i].username, res[i].imageUrl));
+          users.push(new User(i, userDb[i].email, 
+            userDb[i].username, userDb[i].imageUrl));
         }
         this.users=users;
-        return users;
+        return users as User[];
       }));
   }
 
