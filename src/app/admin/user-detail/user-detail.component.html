@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-12">
+    <img [src]="selectedUser.imageUrl" alt="{{selectedUser.username}}" class="img-rensponsive">
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Username: {{selectedUser.username}}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div 
+      class="btn-group"
+      appDropdown>
+      <button type="button" class="btn btn-primary dropdown-toggle">Manage User Profile
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a style="cursor: pointer;" (click)="onEditUser()" *ngIf="isAdmin()">Edit User</a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="onDeleteUser()" *ngIf="isAdmin()">Delete User</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">User Email: {{selectedUser.email}}</div>
+  <div class="col-xs-12">User Status: {{selectedUser.status}}</div>
+  <div class="col-xs-12">User Role: {{selectedUser.role}}</div>
+
+</div>

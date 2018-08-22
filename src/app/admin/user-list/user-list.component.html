@@ -1,0 +1,15 @@
+<div class="row">
+	<div class="col-xs-12">
+		<button class="btn btn-success" (click)="onNewUser()">New User</button>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-xs-12">
+		<app-user-item 
+		*ngFor="let userEl of users | async; let i=index" 
+		[user]="userEl"
+		[index]="i">
+		</app-user-item>
+	</div>
+</div>

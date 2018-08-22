@@ -10,6 +10,7 @@ import { DataStorageService } from "../shared/data-storage.service";
 import { AuthService } from "../auth/auth.service";
 import { AuthGuard } from "../auth/auth-guard.service";
 import { ProjectService } from "../projects/project.service";
+import { UserService } from "../admin/user.service";
 
 @NgModule({
 	declarations: [
@@ -27,6 +28,7 @@ import { ProjectService } from "../projects/project.service";
 	providers: [
 		ShoppingListService,
 		ProjectService,
+		UserService,
 		DataStorageService,
 		AuthService,
 		AuthGuard
