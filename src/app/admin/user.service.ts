@@ -11,8 +11,9 @@ const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/users';
 @Injectable()
 export class UserService {
   usersChanged = new Subject<User[]>()
+  userUid:string;
 
-  private users: User[]=[]
+  private users: User[] = []
 
   constructor(
     private http: Http,
@@ -21,38 +22,67 @@ export class UserService {
 
   getAllUsers() {
     return this.http.get(`${baseUrl}/.json`)
-      .pipe(map((res : Response) => {
-        
+      .pipe(map((res: Response) => {
         const userDb = res.json();
         const ids = Object.keys(res.json());
-        const users : User[] = [];
+
+        const users: User[] = [];
         for (const i of ids) {
-          users.push(new User(i, userDb[i].email, 
+          users.push(new User(i, userDb[i].email,
             userDb[i].username, userDb[i].imageUrl));
         }
-        this.users=users;
+        this.users = users;
         return users as User[];
       }));
   }
 
-  createUser(body : User) {
+ 
+  getById(userId: string) {
     const token = this.authService.getToken();
-    return this.http.put(`${baseUrl}/${body.id}/.json?auth=`+token, body);
+    return this.http.get(`${baseUrl}/${userId}/.json?auth=` + token);
   }
 
-  getById(userId : string) {
+  addUserAndSetUserUid(user : User, password: string) {
+    //to change userId with correct one is possible after user is signup in firebase
+    this.authService.signupUserIn(user.email,password).then(
+      data=>{
+        console.log(data.user.uid)
+        this.userUid = data.user.uid;
+        this.addUser(user,password).subscribe((r) => {
+          console.log(r)
+         
+        })
+      }
+    )
+    .catch(
+      error => console.log(error)
+    );;}
+
+    addUser(user : User, password: string){
+    console.log(this.userUid);
+    user.id=this.userUid;
     const token = this.authService.getToken();
-    return this.http.get(`${baseUrl}/${userId}/.json?auth=`+token);
+    return this.http.put(`${baseUrl}/${user.id}/.json?auth=`+token, user);
+}
+
+  editUser(body: User) {
+    const token = this.authService.getToken();
+
+    let index = this.users.indexOf(body);
+    console.log(index);
+
+    this.users[index] = body;
+    this.usersChanged.next(this.users.slice());
+    return this.http.patch(`${baseUrl}/${body.id}/.json?auth=` + token, body);
   }
 
-  editUser(body : User) {
+  
+  deleteUser(user: User) {
     const token = this.authService.getToken();
-    return this.http.patch(`${baseUrl}/${body.id}/.json?auth=`+token, body);
-  }
-
-  deleteUser(userId : string) {
-    const token = this.authService.getToken();
-    return this.http.delete(`${baseUrl}/${userId}/.json?auth=`+token);
+    let index = this.users.indexOf(user);
+    this.users.splice(index, 1);
+    this.usersChanged.next(this.users.slice());
+    return this.http.delete(`${baseUrl}/${user.id}/.json?auth=` + token);
   }
 
 }

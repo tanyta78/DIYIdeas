@@ -1,10 +1,11 @@
 <a 
 	style="cursor: pointer;"
-	[routerLink]="[index]"
+	[routerLink]="[index,user.id]"
 	routerLinkActive="active"
 	class="list-group-item clearfix" >
 			<div class="pull-left">
 				<h4 class="list-group-item-heading">Username: {{user.username}} Email: {{user.email}}</h4>
 				<p class="list-group-item-text">Status: {{user.status}}</p>
+				
 			</div>
 </a>

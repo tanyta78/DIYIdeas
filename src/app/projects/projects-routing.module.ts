@@ -6,15 +6,21 @@ import { ProjectStartComponent } from './project-start/project-start.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { AuthGuard } from '../auth/auth-guard.service';
+import { MyProjectsComponent } from './my-projects/my-projects.component';
+import { FavoriteProjectsComponent } from './favorite-projects/favorite-projects.component';
 
-const projectsRoutes:Routes = [
-  { path: '', component: ProjectsComponent ,children:[
-		{ path: '', component: ProjectStartComponent },
-		{ path: 'new', component: ProjectEditComponent, canActivate: [AuthGuard] },
-		{ path: ':id', component: ProjectDetailComponent },
-    { path: ':id/edit', component: ProjectEditComponent, canActivate: [AuthGuard] },
-		{ path: ':id/delete', component: ProjectEditComponent, canActivate: [AuthGuard] }   
-]}];
+const projectsRoutes: Routes = [
+  {
+    path: '', component: ProjectsComponent, children: [
+      { path: '', component: ProjectStartComponent },
+      { path: 'new', component: ProjectEditComponent, canActivate: [AuthGuard] },
+      { path: 'my', component: MyProjectsComponent, canActivate: [AuthGuard] },
+      { path: 'favorite', component: FavoriteProjectsComponent, canActivate: [AuthGuard] },
+      { path: ':id', component: ProjectDetailComponent },
+      { path: ':id/edit', component: ProjectEditComponent, canActivate: [AuthGuard] },
+      { path: ':id/delete', component: ProjectEditComponent, canActivate: [AuthGuard] },
+    ],
+  }];
 
 @NgModule({
   imports: [

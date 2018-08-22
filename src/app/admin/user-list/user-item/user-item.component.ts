@@ -8,8 +8,9 @@ import { User } from '../../user.model';
 })
 export class UserItemComponent implements OnInit {
   @Input() user:User;
-  //index ? string
   @Input() index: string;
+  userId:string = '';
+
   
   constructor() { }
 

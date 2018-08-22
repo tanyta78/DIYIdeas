@@ -18,8 +18,6 @@ export class DataStorageService {
 	}
 
 	getProjects() {
-		//const token = this.authService.getToken();
-		// this.http.get('https://diy-ideas-e2852.firebaseio.com/projects.json?auth='+token)
 		this.http.get('https://diy-ideas-e2852.firebaseio.com/projects.json')
 			.pipe(map(
 				(res: Response) => {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user.model';
-import { UserService } from '../user.service';
+
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
@@ -14,20 +14,23 @@ export class UserDetailComponent implements OnInit {
   id:string;
 
   constructor(
-    private userService:UserService,
+    private authService:AuthService,
     private route: ActivatedRoute,
-    private router: Router,
-    private authService:AuthService
+    private router: Router
   ) { }
 
   ngOnInit() {
-        this.id = this.route.snapshot.params['id'];
-        this.userService.getById(this.id).subscribe(
+    this.route.params
+      .subscribe((params: Params) => {
+        this.id = params['db'];
+        this.authService.getById(this.id).subscribe(
           (data)=>{
+            // console.log(data)
             this.selectedUser = data.json() as User;
+            console.log(this.selectedUser)
           }
         );
-      
+      })
   }
 
   onEditUser() {

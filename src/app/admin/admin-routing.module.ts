@@ -12,9 +12,9 @@ const adminRoutes: Routes = [
 		path: '', component: AdminComponent, children: [
 			{ path: '', component: AdminStartComponent },
 			{ path: 'new', component: UserEditComponent, canActivate: [AuthGuard] },
-			{ path: ':id', component: UserDetailComponent,canActivate: [AuthGuard] },
-			{ path: ':id/edit', component: UserEditComponent, canActivate: [AuthGuard] },
-			{ path: ':id/delete', component: UserEditComponent, canActivate: [AuthGuard] }
+			{ path: ':id/:db', component: UserDetailComponent,canActivate: [AuthGuard] },
+			{ path: ':id/:db/edit', component: UserEditComponent, canActivate: [AuthGuard] },
+			{ path: ':id/:db/delete', component: UserEditComponent, canActivate: [AuthGuard] }
 		]
 	}];
 
