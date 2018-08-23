@@ -1,4 +1,4 @@
-DIYIdeas SPA (Angular 6)
+# DIYIdeas SPA (Angular 6)
 ## Introduction
 DIYideas SPA is a project undertaken as a mandatory requirement for the course “Angular 6 Fundamentals ” in SoftUni. 
 ## Overall Description 
