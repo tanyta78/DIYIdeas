@@ -61,7 +61,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - dropdown directive and filter pipe.
   - All the “dumb” components and pipes are implemented here. These components don’t import and inject services from core or other features in their constructors. They receive all data though attributes in the template of the component using them. This all sums up to the fact that SharedModule doesn’t have any dependency to the rest of our application.
 ### Lazy-loading for some of the modules so the app can start faster 
-  – ProjectsModule and AdminModule.
+  - ProjectsModule and AdminModule.
   - Preload lazy-loaded modules after the app starts so they can be ready for use as soon as possible
 ### Interceptors for attach token to the request headers, showing notifications from the server response and error handling
 ### Use source control system - https://github.com/tanyta78/DIYIdeas
@@ -70,6 +70,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ### Use Subject for state management
 ### Use Angular Animations in shopping list
 #### Author
-* Tatyana Milanova
+* Tatyana Milanova https://github.com/tanyta78
 
 
