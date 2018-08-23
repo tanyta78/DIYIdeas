@@ -5,11 +5,11 @@ DIYideas SPA is a project undertaken as a mandatory requirement for the course â
    DIYideas is free website. Users can upload, save, search, and manage different ideas for DIY projects. When choose DIY (do it yourself) project, user can add all needed ingredients to shopping list.
 
 The public part is visible without authentication. This public part includes:
-	- Application start page with last added projects;
-	- Search form;
-	- User login form;
-	- User registration form;
-	- Detail info for each idea with ability to add ingredients to personal shopping list;
+  - Application start page with last added projects;
+  - Search form;
+  - User login form;
+  - User registration form;
+  - Detail info for each idea with ability to add ingredients to personal shopping list;
   - Shopping list with ability to edit and delete ingredients;
 
 
