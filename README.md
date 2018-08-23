@@ -1,6 +1,6 @@
 DIYIdeas SPA (Angular 6)
 ## Introduction
-DIYideas SPA is a project undertaken as a mandatory requirement for the course “Angular 6 Fundamentals ” in SoftUni. 
+DIYideas SPA is a project undertaken as a mandatory requirement for the course â€œAngular 6 Fundamentals â€ in SoftUni. 
 ## Overall Description 
    DIYideas is free website. Users can upload, save, search, and manage different ideas for DIY projects. When choose DIY (do it yourself) project, user can add all needed ingredients to shopping list.
 
@@ -14,7 +14,7 @@ The public part is visible without authentication. This public part includes:
 
 
 Registered users have personal area in the web application accessible after successful login. This area hold:
-   - User’s profiles management functionality;
+   - Userâ€™s profiles management functionality;
    - The user's projects with ability to create edit and delete ideas;
    - List of other users ideas with ability to view, like and comment;
 
@@ -46,21 +46,21 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 ## Project architecture
  In this project I've used:
-> Create multiple feature modules for every independent feature of application with :
+### Create multiple feature modules for every independent feature of application with :
 		Components,
    Service for each feature, 
 		TypeScript models,
-      Different type of data binding – string interpolation, property binding, event binding, two-way binding,
+      Different type of data binding â€“ string interpolation, property binding, event binding, two-way binding,
       Structural directives(*ngIf,*ngFor) and attribute directives(ngStyle and ngClass),
       Router and Guards to prevent unauthorized users to view routes that require authentication or admin rights
       Reactive forms for handling user input and template-driven forms for sign in and register
-> Create CoreModule – header component, home component and interceptors. All services which have to have one and only one instance per application (singleton services) are implemented here.
-> Create SharedModule – dropdown directive and filter pipe. All the “dumb” components and pipes are implemented here. These components don’t import and inject services from core or other features in their constructors. They receive all data though attributes in the template of the component using them. This all sums up to the fact that SharedModule doesn’t have any dependency to the rest of our application.
-> Lazy-loading for some of the modules so the app can start faster – ProjectsModule and AdminModule.Preload lazy-loaded modules after the app starts so they can be ready for use as soon as possible
+> Create CoreModule â€“ header component, home component and interceptors. All services which have to have one and only one instance per application (singleton services) are implemented here.
+> Create SharedModule â€“ dropdown directive and filter pipe. All the â€œdumbâ€ components and pipes are implemented here. These components donâ€™t import and inject services from core or other features in their constructors. They receive all data though attributes in the template of the component using them. This all sums up to the fact that SharedModule doesnâ€™t have any dependency to the rest of our application.
+> Lazy-loading for some of the modules so the app can start faster â€“ ProjectsModule and AdminModule.Preload lazy-loaded modules after the app starts so they can be ready for use as soon as possible
 > Interceptors for attach token to the request headers, showing notifications from the server response and error handling
 > Use source control system - https://github.com/tanyta78/DIYIdeas
-> Use responsive design – Bootstrap
-> Deploy the application in a cloud environment –  https://diy-ideas.herokuapp.com/
+> Use responsive design â€“ Bootstrap
+> Deploy the application in a cloud environment â€“  https://diy-ideas.herokuapp.com/
 > Use Subject for state management
 > Use Angular Animations in shopping list
 Author
