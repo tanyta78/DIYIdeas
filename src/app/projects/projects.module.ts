@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -14,11 +14,13 @@ import { ProjectItemComponent } from './project-list/project-item/project-item.c
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { FavoriteProjectsComponent } from './favorite-projects/favorite-projects.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
     NgxPaginationModule,
     ReactiveFormsModule,
+    FormsModule,
     ProjectsRoutingModule,
     SharedModule
   ],
@@ -29,7 +31,8 @@ import { FavoriteProjectsComponent } from './favorite-projects/favorite-projects
     ProjectEditComponent, 
     ProjectDetailComponent, 
     ProjectItemComponent, 
-    MyProjectsComponent, FavoriteProjectsComponent
+    MyProjectsComponent, 
+    FavoriteProjectsComponent
   ]
 })
 export class ProjectsModule { }

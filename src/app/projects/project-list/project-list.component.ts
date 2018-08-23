@@ -16,6 +16,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   projects:Project[];
   pageSize: number = 2;
   currentPage:number = 1;
+  filteredStatus : string = '';
 
   constructor(
     private projectService: ProjectService,

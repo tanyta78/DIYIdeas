@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { HeaderComponent } from "./header/header.component";
 import { HomeComponent } from "./home/home.component";
@@ -11,6 +12,9 @@ import { AuthService } from "../auth/auth.service";
 import { AuthGuard } from "../auth/auth-guard.service";
 import { ProjectService } from "../projects/project.service";
 import { UserService } from "../admin/user.service";
+import { SuccessInterceptor } from "./interceptors/success.interceptor";
+import { ErrorInterceptor } from "./interceptors/error.interceptor";
+import { AuthInterceptor } from "./interceptors/auth.interceptor";
 
 @NgModule({
 	declarations: [
@@ -31,7 +35,22 @@ import { UserService } from "../admin/user.service";
 		UserService,
 		DataStorageService,
 		AuthService,
-		AuthGuard
+		AuthGuard,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: SuccessInterceptor,
+			multi: true
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ErrorInterceptor,
+			multi: true
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptor,
+			multi: true
+		}
 	]
 })
 export class CoreModule { }

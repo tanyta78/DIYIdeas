@@ -10,7 +10,8 @@ import { FilterPipe } from './filter.pipe';
 	],
 	exports:[
 		CommonModule,
-		DropdownDirective
+		DropdownDirective,
+		FilterPipe
 	]
 })
 export class SharedModule{}

@@ -99,8 +99,8 @@ export class UserEditComponent implements OnInit {
 
     if (this.editMode || this.deleteMode) {
       this.authService.getById(this.id).subscribe(
-        data => {
-          const user = data.json() as User;
+        user => {
+          // const user = data.json() as User;
           console.log(user)
           username = user.username;
           imageUrl = user.imageUrl;

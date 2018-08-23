@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
-import { User } from './user.model';
-import { Http } from '@angular/http';
-import { map } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
-
-const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/users';
 //TODO: DELETE THIS SERVICE
 @Injectable()
 export class UserService {
@@ -16,8 +9,7 @@ export class UserService {
   // private users: User[] = []
 
   constructor(
-    private http: Http,
-    private authService: AuthService
+    
   ) { }
 
 //   getAllUsers() {

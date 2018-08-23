@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
+import { HttpClient } from "@angular/common/http";
 
 import { Subject } from 'rxjs';
-import { User } from '../admin/user.model';
-import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
+
+import { User } from '../admin/user.model';
 
 const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/users';
 
@@ -22,14 +23,14 @@ export class AuthService {
 
 	constructor(
 		private router: Router,
-		private http: Http
+		private http: HttpClient
 	) { }
 
 	getAllUsers() {
-		return this.http.get(`${baseUrl}/.json`)
-			.pipe(map((res: Response) => {
-				const userDb = res.json();
-				const ids = Object.keys(res.json());
+		return this.http.get<User[]>(`${baseUrl}/.json`)
+			.pipe(map((userDb) => {
+				// const userDb = res.json();
+				const ids = Object.keys(userDb);
 
 				const users: User[] = [];
 				for (const i of ids) {
@@ -38,40 +39,40 @@ export class AuthService {
 				}
 				this.users = users;
 				console.log(users);
-				return users as User[];
+				// return users as User[];
+				return users
 			})).subscribe(
-				(allUsers: User[])=>{
+				(allUsers: User[]) => {
 					this.users = allUsers;
 					this.usersChanged.next(this.users.slice())
 				}
 			);
 	}
-	
-	getUsers(){
+
+	getUsers() {
 		return this.users.slice();
-	  }
-
-	getUser(userId:string){
-		let index = this.users.findIndex(item=>userId===item.id);
-		console.log(index);
-		return this.users[index];
-	  }
-
-	getById(userId: string) {
-		const token = this.getToken();
-		return this.http.get(`${baseUrl}/${userId}/.json?auth=` + token);
 	}
 
-	addUserIn(user:User){
+	getUser(userId: string) {
+		let index = this.users.findIndex(item => userId === item.id);
+		console.log(index);
+		return this.users[index];
+	}
+
+	getById(userId: string) {
+		return this.http.get<User>(`${baseUrl}/${userId}/.json`);
+	}
+
+	addUserIn(user: User) {
 		this.users.push(user);
 		this.usersChanged.next(this.users.slice())
-	  }
+	}
 
 	addUserAndSetUserUid(user: User, password: string) {
 		//to change userId with correct one is possible after user is signup in firebase
 		this.signupUserIn(user.email, password).then(
 			data => {
-			
+
 				this.userUid = data.user.uid;
 				this.addUser(user, password).subscribe((r) => {
 				})
@@ -83,36 +84,29 @@ export class AuthService {
 	}
 
 	addUser(user: User, password: string) {
-		
 		user.id = this.userUid;
-		const token = this.getToken();
-		return this.http.put(`${baseUrl}/${user.id}/.json?auth=` + token, user);
+		return this.http.put(`${baseUrl}/${user.id}/.json`, user);
 	}
 
-	updateUser(newUser: User){
-		let index = this.users.findIndex(item=>newUser.id===item.id);
-		console.log(index);
-		this.users[index]=newUser;
+	updateUser(newUser: User) {
+		let index = this.users.findIndex(item => newUser.id === item.id);
+		
+		this.users[index] = newUser;
 		this.usersChanged.next(this.users.slice());
-	  }
+	}
 
 	editUser(user: User) {
-		const token = this.getToken();
-
-		let index = this.users.findIndex(item=>user.id===item.id);
-		console.log(index);
-
+		let index = this.users.findIndex(item => user.id === item.id);
 		this.users[index] = user;
 		this.usersChanged.next(this.users.slice());
-		return this.http.patch(`${baseUrl}/${user.id}/.json?auth=` + token, user);
+		return this.http.patch(`${baseUrl}/${user.id}/.json`, user);
 	}
 
 	deleteUser(user: User) {
-		const token = this.getToken();
-		let index = this.users.findIndex(item=>user.id===item.id);
+		let index = this.users.findIndex(item => user.id === item.id);
 		this.users.splice(index, 1);
 		this.usersChanged.next(this.users.slice());
-		return this.http.delete(`${baseUrl}/${user.id}/.json?auth=` + token);
+		return this.http.delete(`${baseUrl}/${user.id}/.json`);
 	}
 
 	signupUser(email: string, password: string) {
@@ -141,12 +135,11 @@ export class AuthService {
 					.then(
 						(token: string) => {
 							this.token = token
-						
+
 							this.getById(this.uid).subscribe(
 								(data) => {
-									
-									this.isAdmin = data.json().role === 'admin' ? true : false;
-								
+
+									this.isAdmin = data.role === 'admin' ? true : false;
 									this.router.navigate(['/'])
 								}
 							)
@@ -179,7 +172,7 @@ export class AuthService {
 	isAdminUser(userId: string) {
 		this.getById(userId).subscribe(
 			(data) => {
-				this.isAdmin = data.json().role === 'admin' ? true : false;
+				this.isAdmin = data.role === 'admin' ? true : false;
 			}
 		)
 	}

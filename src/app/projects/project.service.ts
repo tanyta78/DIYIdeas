@@ -4,9 +4,9 @@ import { Subject } from 'rxjs';
 import { Project } from './project.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Ingredient } from '../shared/ingredient.model';
-import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { AuthService } from "../auth/auth.service";
+import { HttpClient } from '@angular/common/http';
 
 const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/projects';
 
@@ -51,7 +51,7 @@ export class ProjectService {
 
   constructor(
     private shoppingListService: ShoppingListService,
-    private http: Http,
+    private http: HttpClient,
     private authService: AuthService
   ) { }
 
@@ -61,24 +61,18 @@ export class ProjectService {
   }
 
   storeProjects() {
-		const token = this.authService.getToken();
-		return this.http.put('https://diy-ideas-e2852.firebaseio.com/projects.json?auth='+token, this.getProjects());
+		return this.http.put('https://diy-ideas-e2852.firebaseio.com/projects.json', this.getProjects());
   }
   
   getAllProjects(){
-    return this.http.get('https://diy-ideas-e2852.firebaseio.com/projects.json')
-    .pipe(map((res: Response) => {
-      const projectDb = res.json();
-      const ids = Object.keys(res.json());
-
-console.log(projectDb)
-
+    return this.http.get<Project[]>('https://diy-ideas-e2852.firebaseio.com/projects.json')
+    .pipe(map((projectDb) => {
+      const ids = Object.keys(projectDb);
       const projects: Project[] = [];
       for (const i of ids) {
         projects.push(projectDb[i]);
       }
       this.projects = projects;
- console.log(projects);
       return projects as Project[];
     })).subscribe(
       (allprojects: Project[])=>{
@@ -108,22 +102,17 @@ console.log(projectDb)
   }
 
   addProjectToDatabase(project:Project){
-    const token = this.authService.getToken();
-    
-    return this.http.put(`${baseUrl}/${project.id}/.json?auth=`+token, project);
+    return this.http.put(`${baseUrl}/${project.id}/.json=`, project);
   }
 
   updateProject(newProject: Project){
     let index = this.projects.findIndex(item=>newProject.id===item.id);
-		console.log(index);
     this.projects[index]=newProject;
     this.projectsChanged.next(this.projects.slice());
   }
 
   editProjectOnDatabase(projectId: string, newProject: Project){
-    const token = this.authService.getToken();
-   
-    return this.http.patch(`${baseUrl}/${projectId}/.json?auth=`+token, newProject);
+   return this.http.patch(`${baseUrl}/${projectId}/.json`, newProject);
   }
 
   deleteProject(projectId:string){
@@ -133,7 +122,6 @@ console.log(projectDb)
   }
 
   deleteProjectOnDatabase(projectId:string){
-    const token = this.authService.getToken();
-    return this.http.delete(`${baseUrl}/${projectId}/.json?auth=`+token);
+    return this.http.delete(`${baseUrl}/${projectId}/.json`);
   }
 }

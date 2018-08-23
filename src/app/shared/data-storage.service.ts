@@ -1,29 +1,26 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+
 import { ProjectService } from "../projects/project.service";
 import { Project } from "../projects/project.model";
 import { map } from 'rxjs/operators';
 import { AuthService } from "../auth/auth.service";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class DataStorageService {
 	constructor(
-		private http: Http,
+		private http: HttpClient,
 		private projectService: ProjectService,
 		private authService: AuthService) { }
 
 	storeProjects() {
-		const token = this.authService.getToken();
-		return this.http.put('https://diy-ideas-e2852.firebaseio.com/projects.json?auth='+token, this.projectService.getProjects());
+		return this.http.put('https://diy-ideas-e2852.firebaseio.com/projects.json', this.projectService.getProjects());
 	}
 
 	getProjects() {
-		this.http.get('https://diy-ideas-e2852.firebaseio.com/projects.json')
+		this.http.get<Project[]>('https://diy-ideas-e2852.firebaseio.com/projects.json')
 			.pipe(map(
-				(res: Response) => {
-					const ids = Object.keys(res);
-
-					const projects : Project[] = res.json();
+				(projects) => {
 
 					for (const project of projects) {
 						if(project==null)continue;
