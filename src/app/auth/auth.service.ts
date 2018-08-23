@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../admin/user.model';
+import { ToastrService } from "ngx-toastr";
 
 const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/users';
 
@@ -23,7 +24,8 @@ export class AuthService {
 
 	constructor(
 		private router: Router,
-		private http: HttpClient
+		private http: HttpClient,
+		private toastr: ToastrService
 	) { }
 
 	getAllUsers() {
@@ -75,6 +77,9 @@ export class AuthService {
 
 				this.userUid = data.user.uid;
 				this.addUser(user, password).subscribe((r) => {
+					this.addUserIn(user);
+					this.toastr.success(`User succesfully created`, 'Success!');
+					
 				})
 			}
 		)
@@ -114,7 +119,7 @@ export class AuthService {
 			.then(data => {
 				console.log(data);
 				//TODO: save new created user in users db collection
-
+				this.toastr.success(`Successfull registraion`, 'Success!');
 				this.router.navigate(['/signin']);
 			})
 			.catch(
@@ -131,6 +136,7 @@ export class AuthService {
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(res => {
 				this.uid = res.user.uid;
+				this.toastr.success(`${res.user.email} logged in`, 'Success!');
 				firebase.auth().currentUser.getIdToken()
 					.then(
 						(token: string) => {
@@ -152,6 +158,7 @@ export class AuthService {
 
 	logout() {
 		firebase.auth().signOut();
+		this.toastr.success(`Successful logged out`, 'Success!');
 		this.token = null;
 		this.router.navigate(['/']);
 	}

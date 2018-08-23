@@ -102,7 +102,7 @@ export class ProjectService {
   }
 
   addProjectToDatabase(project:Project){
-    return this.http.put(`${baseUrl}/${project.id}/.json=`, project);
+    return this.http.put(`${baseUrl}/${project.id}/.json`, project);
   }
 
   updateProject(newProject: Project){

@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 
 import { User } from '../user.model';
 import { Response } from '@angular/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-edit',
@@ -20,7 +21,7 @@ export class UserEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    
+    private toastr:ToastrService,
     private authService: AuthService,
     private router: Router,
   ) { }
@@ -63,6 +64,7 @@ export class UserEditComponent implements OnInit {
       this.authService.updateUser(newUser);
       this.authService.editUser(newUser).subscribe(
         (res: Response) => {
+          this.toastr.success(`User succesfully deleted`, 'Success!');
           this.onCancel();
         }
       );
@@ -72,6 +74,8 @@ export class UserEditComponent implements OnInit {
      
       this.authService.editUser(newUser).subscribe( 
         (res: Response) => {
+          this.toastr.success(`User profile succesfully edited`, 'Success!');
+
         this.onCancel();
       })
     } else{

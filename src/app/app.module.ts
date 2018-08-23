@@ -27,8 +27,8 @@ import { AppComponent } from './app.component';
     ShoppingListModule,
     AuthModule,
     CoreModule,
-    ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })

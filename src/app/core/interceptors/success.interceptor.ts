@@ -23,7 +23,9 @@ export class SuccessInterceptor implements HttpInterceptor {
             );
     }
 
-    private handleSuccess = (event: HttpEvent<any>): void => {
+    private handleSuccess = (event: any): void => {
+        console.log(event);
+        
         if (event instanceof HttpResponse) {
             if (event.body.message) {
                 this.toastr.success(event.body.message, 'Success:');

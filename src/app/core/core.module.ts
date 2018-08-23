@@ -36,16 +36,16 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
 		DataStorageService,
 		AuthService,
 		AuthGuard,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: SuccessInterceptor,
-			multi: true
-		},
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: ErrorInterceptor,
-			multi: true
-		},
+		// {
+		// 	provide: HTTP_INTERCEPTORS,
+		// 	useClass: SuccessInterceptor,
+		// 	multi: true
+		// // },
+		// {
+		// 	provide: HTTP_INTERCEPTORS,
+		// 	useClass: ErrorInterceptor,
+		// 	multi: true
+		// },
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,

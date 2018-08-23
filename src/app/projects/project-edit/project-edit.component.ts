@@ -6,6 +6,7 @@ import { Project } from '../project.model';
 import { AuthService } from '../../auth/auth.service';
 import { DataStorageService } from '../../shared/data-storage.service';
 import { Response } from '@angular/http';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class ProjectEditComponent implements OnInit {
     private authService: AuthService,
     private dataStorageService: DataStorageService,
     private router: Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -61,6 +63,8 @@ export class ProjectEditComponent implements OnInit {
       this.dataStorageService.storeProjects().subscribe(
         (res: Response) => {
           console.log(res);
+          this.toastr.success(`Project succesfully deleted`, 'Success!');
+
           this.router.navigate(['/projects']);
          // this.onCancel();
         }
@@ -69,13 +73,17 @@ export class ProjectEditComponent implements OnInit {
       newProject.id=this.id;
       this.projectService.updateProject(newProject);
       this.projectService.editProjectOnDatabase(this.id, newProject).subscribe((r) => {
-        console.log(r)
+        console.log(r);
+        this.toastr.success(`Project succesfully edited`, 'Success!');
+
         this.onCancel();
       })
     } else {
       this.projectService.addProject(newProject);
       this.projectService.addProjectToDatabase(newProject).subscribe((r) => {
         console.log(r)
+        this.toastr.success(`Project succesfully created`, 'Success!');
+
         this.onCancel();
       })
     }
