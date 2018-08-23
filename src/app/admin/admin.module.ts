@@ -9,10 +9,12 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { UserItemComponent } from './user-list/user-item/user-item.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
     CommonModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     AdminRoutingModule,
     SharedModule

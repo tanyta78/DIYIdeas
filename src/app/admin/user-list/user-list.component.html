@@ -13,9 +13,25 @@
 <div class="row">
 	<div class="col-xs-12">
 		<app-user-item 
-		*ngFor="let userEl of users ; let i=index" 
+		*ngFor="let userEl of users| paginate :{
+			id:'allUsers',
+			itemsPerPage: pageSize,
+			currentPage:currentPage
+		} ; let i=index" 
 		[user]="userEl"
 		[index]="i">
 		</app-user-item>
+		<pagination-controls
+        id="allUsers"
+        (pageChange)="pageChange($event)"
+        maxSize="9"
+        directionLinks="true"
+        autoHide="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You are on page">
+    </pagination-controls>
 	</div>
 </div>

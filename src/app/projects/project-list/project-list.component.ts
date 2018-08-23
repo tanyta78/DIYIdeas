@@ -14,6 +14,8 @@ import { DataStorageService } from '../../shared/data-storage.service';
 export class ProjectListComponent implements OnInit, OnDestroy {
   subscription:Subscription;
   projects:Project[];
+  pageSize: number = 2;
+  currentPage:number = 1;
 
   constructor(
     private projectService: ProjectService,
@@ -38,5 +40,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
-	}
+  }
+  
+  pageChange(page){
+    this.currentPage=page;
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { User } from '../user.model';
 import { AuthService } from '../../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,6 +12,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class UserListComponent implements OnInit,OnDestroy {
   subscription: Subscription;
   users: User [];
+  pageSize: number = 3;
+  currentPage:number = 1;
 
   constructor(
     private authService: AuthService,
@@ -24,10 +26,10 @@ export class UserListComponent implements OnInit,OnDestroy {
         this.users = newUsers;
       }
     );
-
-    this.authService.getAllUsers().subscribe(data=>{
-     this.users = data as User[];
-    });
+    // this.dataStorageServise.getProjects();
+    // this.projects=this.projectService.getProjects();
+    this.authService.getAllUsers();
+    this.users=this.authService.getUsers();
   }
 
   
@@ -37,6 +39,10 @@ export class UserListComponent implements OnInit,OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
-	}
+  }
+  
+  pageChange(page){
+    this.currentPage=page;
+  }
 
 }

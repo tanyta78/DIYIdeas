@@ -7,9 +7,25 @@
 <div class="row">
 	<div class="col-xs-12">
 		<app-project-item 
-		*ngFor="let projectEl of projects; let i=index" 
+		*ngFor="let projectEl of projects| paginate :{
+			id:'allProjects',
+			itemsPerPage: pageSize,
+			currentPage:currentPage
+		}; let i=index" 
 		[project]="projectEl"
 		[index]="i">
 		</app-project-item>
+		<pagination-controls
+        id="allProjects"
+        (pageChange)="pageChange($event)"
+        maxSize="9"
+        directionLinks="true"
+        autoHide="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You are on page">
+    </pagination-controls>
 	</div>
 </div>

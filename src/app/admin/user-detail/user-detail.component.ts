@@ -23,13 +23,7 @@ export class UserDetailComponent implements OnInit {
     this.route.params
       .subscribe((params: Params) => {
         this.id = params['db'];
-        this.authService.getById(this.id).subscribe(
-          (data)=>{
-            // console.log(data)
-            this.selectedUser = data.json() as User;
-            console.log(this.selectedUser)
-          }
-        );
+        this.selectedUser = this.authService.getUser(this.id);
       })
   }
 

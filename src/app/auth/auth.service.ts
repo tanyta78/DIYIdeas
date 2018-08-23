@@ -13,7 +13,6 @@ const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/users';
 export class AuthService {
 	token: string;
 	isAdmin: boolean = false;
-	//isAdmin: boolean = true;
 
 	uid: string;
 	usersChanged = new Subject<User[]>()
@@ -38,24 +37,43 @@ export class AuthService {
 						userDb[i].username, userDb[i].imageUrl));
 				}
 				this.users = users;
+				console.log(users);
 				return users as User[];
-			}));
+			})).subscribe(
+				(allUsers: User[])=>{
+					this.users = allUsers;
+					this.usersChanged.next(this.users.slice())
+				}
+			);
 	}
 	
+	getUsers(){
+		return this.users.slice();
+	  }
+
+	getUser(userId:string){
+		let index = this.users.findIndex(item=>userId===item.id);
+		console.log(index);
+		return this.users[index];
+	  }
+
 	getById(userId: string) {
 		const token = this.getToken();
 		return this.http.get(`${baseUrl}/${userId}/.json?auth=` + token);
 	}
 
+	addUserIn(user:User){
+		this.users.push(user);
+		this.usersChanged.next(this.users.slice())
+	  }
+
 	addUserAndSetUserUid(user: User, password: string) {
 		//to change userId with correct one is possible after user is signup in firebase
 		this.signupUserIn(user.email, password).then(
 			data => {
-				console.log(data.user.uid)
+			
 				this.userUid = data.user.uid;
 				this.addUser(user, password).subscribe((r) => {
-					console.log(r)
-
 				})
 			}
 		)
@@ -65,26 +83,33 @@ export class AuthService {
 	}
 
 	addUser(user: User, password: string) {
-		console.log(this.userUid);
+		
 		user.id = this.userUid;
 		const token = this.getToken();
 		return this.http.put(`${baseUrl}/${user.id}/.json?auth=` + token, user);
 	}
 
-	editUser(body: User) {
+	updateUser(newUser: User){
+		let index = this.users.findIndex(item=>newUser.id===item.id);
+		console.log(index);
+		this.users[index]=newUser;
+		this.usersChanged.next(this.users.slice());
+	  }
+
+	editUser(user: User) {
 		const token = this.getToken();
 
-		let index = this.users.indexOf(body);
+		let index = this.users.findIndex(item=>user.id===item.id);
 		console.log(index);
 
-		this.users[index] = body;
+		this.users[index] = user;
 		this.usersChanged.next(this.users.slice());
-		return this.http.patch(`${baseUrl}/${body.id}/.json?auth=` + token, body);
+		return this.http.patch(`${baseUrl}/${user.id}/.json?auth=` + token, user);
 	}
 
 	deleteUser(user: User) {
 		const token = this.getToken();
-		let index = this.users.indexOf(user);
+		let index = this.users.findIndex(item=>user.id===item.id);
 		this.users.splice(index, 1);
 		this.usersChanged.next(this.users.slice());
 		return this.http.delete(`${baseUrl}/${user.id}/.json?auth=` + token);
@@ -116,13 +141,12 @@ export class AuthService {
 					.then(
 						(token: string) => {
 							this.token = token
-							console.log('in gettoken = ' + token)
-							console.log('after gettoken = ' + this.token)
+						
 							this.getById(this.uid).subscribe(
 								(data) => {
-									console.log(data.json())
+									
 									this.isAdmin = data.json().role === 'admin' ? true : false;
-									console.log('after is admin user = ' + this.isAdmin)
+								
 									this.router.navigate(['/'])
 								}
 							)
@@ -144,8 +168,6 @@ export class AuthService {
 			.then(
 				(token: string) => {
 					this.token = token
-					console.log('in gettoken = ' + token)
-
 				});
 		return this.token;
 	}
@@ -157,7 +179,6 @@ export class AuthService {
 	isAdminUser(userId: string) {
 		this.getById(userId).subscribe(
 			(data) => {
-				console.log(data.json())
 				this.isAdmin = data.json().role === 'admin' ? true : false;
 			}
 		)

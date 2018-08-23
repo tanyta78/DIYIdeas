@@ -60,6 +60,7 @@ export class UserEditComponent implements OnInit {
       //newUser.status='deleted';
       newUser.id= this.route.snapshot.params['db'];
       newUser.status='deleted';
+      this.authService.updateUser(newUser);
       this.authService.editUser(newUser).subscribe(
         (res: Response) => {
           this.onCancel();
@@ -67,6 +68,7 @@ export class UserEditComponent implements OnInit {
       );
     } else if (this.editMode) {
       newUser.id= this.route.snapshot.params['db'];
+      this.authService.updateUser(newUser);
      
       this.authService.editUser(newUser).subscribe( 
         (res: Response) => {
@@ -79,6 +81,8 @@ export class UserEditComponent implements OnInit {
     
       this.onCancel();
     }
+
+    this.onCancel();
 
   }
   onCancel() {

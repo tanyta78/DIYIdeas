@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
+
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects.component';
 import { ProjectStartComponent } from './project-start/project-start.component';
@@ -15,6 +17,7 @@ import { FavoriteProjectsComponent } from './favorite-projects/favorite-projects
 @NgModule({
   imports: [
     CommonModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     ProjectsRoutingModule,
     SharedModule
