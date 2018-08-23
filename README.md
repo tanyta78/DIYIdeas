@@ -10,7 +10,7 @@ The public part is visible without authentication. This public part includes:
 	- User login form;
 	- User registration form;
 	- Detail info for each idea with ability to add ingredients to personal shopping list;
-   	- Shopping list with ability to edit and delete ingredients;
+  - Shopping list with ability to edit and delete ingredients;
 
 
 Registered users have personal area in the web application accessible after successful login. This area hold:
@@ -47,23 +47,19 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Project architecture
  In this project I've used:
 ### Create multiple feature modules for every independent feature of application with :
-		Components,
-   Service for each feature, 
-		TypeScript models,
-      Different type of data binding – string interpolation, property binding, event binding, two-way binding,
-      Structural directives(*ngIf,*ngFor) and attribute directives(ngStyle and ngClass),
-      Router and Guards to prevent unauthorized users to view routes that require authentication or admin rights
-      Reactive forms for handling user input and template-driven forms for sign in and register
-> Create CoreModule – header component, home component and interceptors. All services which have to have one and only one instance per application (singleton services) are implemented here.
-> Create SharedModule – dropdown directive and filter pipe. All the “dumb” components and pipes are implemented here. These components don’t import and inject services from core or other features in their constructors. They receive all data though attributes in the template of the component using them. This all sums up to the fact that SharedModule doesn’t have any dependency to the rest of our application.
-> Lazy-loading for some of the modules so the app can start faster – ProjectsModule and AdminModule.Preload lazy-loaded modules after the app starts so they can be ready for use as soon as possible
-> Interceptors for attach token to the request headers, showing notifications from the server response and error handling
-> Use source control system - https://github.com/tanyta78/DIYIdeas
-> Use responsive design – Bootstrap
-> Deploy the application in a cloud environment –  https://diy-ideas.herokuapp.com/
-> Use Subject for state management
-> Use Angular Animations in shopping list
-Author
+		Components,   Service for each feature,		TypeScript models,      Different type of data binding – string interpolation, property binding, event binding, two-way binding,      Structural directives(*ngIf,*ngFor) and attribute directives(ngStyle and ngClass),      Router and Guards to prevent unauthorized users to view routes that require authentication or admin rights      Reactive forms for handling user input and template-driven forms for sign in and register
+### Create CoreModule 
+    header component, home component and interceptors. All services which have to have one and only one instance per application (singleton services) are implemented here.
+### Create SharedModule 
+  dropdown directive and filter pipe. All the “dumb” components and pipes are implemented here. These components don’t import and inject services from core or other features in their constructors. They receive all data though attributes in the template of the component using them. This all sums up to the fact that SharedModule doesn’t have any dependency to the rest of our application.
+### Lazy-loading for some of the modules so the app can start faster – ProjectsModule and AdminModule.Preload lazy-loaded modules after the app starts so they can be ready for use as soon as possible
+### Interceptors for attach token to the request headers, showing notifications from the server response and error handling
+### Use source control system - https://github.com/tanyta78/DIYIdeas
+### Use responsive design – Bootstrap
+### Deploy the application in a cloud environment –  https://diy-ideas.herokuapp.com/
+### Use Subject for state management
+### Use Angular Animations in shopping list
+#### Author
 * Tatyana Milanova
 
 
