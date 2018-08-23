@@ -1,7 +1,7 @@
 DIYIdeas SPA (Angular 6)
-1. Introduction
+## Introduction
 DIYideas SPA is a project undertaken as a mandatory requirement for the course “Angular 6 Fundamentals ” in SoftUni. 
-2. Overall Description 
+## Overall Description 
    DIYideas is free website. Users can upload, save, search, and manage different ideas for DIY projects. When choose DIY (do it yourself) project, user can add all needed ingredients to shopping list.
 
 The public part is visible without authentication. This public part includes:
@@ -22,9 +22,10 @@ System administrators should have administrative access to the system and permis
 -  to create / edit / delete users,
 -  to edit/ delete ideas projects
 The goal of this project is to show the core concepts of building SPA with Angular using Firebase as a backend. 
-3. Installation
+
+## Installation . Install the dependencies and start the client (port: 4200)
 This project was generated with [Angular CLI] (https://github.com/angular/angular-cli) version 6.1.4.
-## Install the dependencies and start the client (port: 4200)
+
 $ cd..
 $ cd client
 $ npm install
@@ -43,7 +44,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 ## Further help
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-4. Project architecture
+## Project architecture
  In this project I've used:
 > Create multiple feature modules for every independent feature of application with :
 		Components,
