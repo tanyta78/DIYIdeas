@@ -30,7 +30,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.dataStorageServise.getProjects();
+    //this.dataStorageServise.getProjects();
+    this.projectService.getAllProjects();
     this.projects=this.projectService.getProjects();
   }
 

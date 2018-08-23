@@ -13,7 +13,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class ProjectDetailComponent implements OnInit {
   currentProject: Project;
-  id: number;
+  id: string;
 
   constructor(
     private projectService: ProjectService,
@@ -26,7 +26,7 @@ export class ProjectDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params
       .subscribe((params: Params) => {
-        this.id = +params['id'];
+        this.id = params['id'];
         this.currentProject = this.projectService.getProject(this.id);
       })
   }

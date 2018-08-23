@@ -63,13 +63,38 @@ export class ProjectService {
   storeProjects() {
 		const token = this.authService.getToken();
 		return this.http.put('https://diy-ideas-e2852.firebaseio.com/projects.json?auth='+token, this.getProjects());
-	}
+  }
+  
+  getAllProjects(){
+    return this.http.get('https://diy-ideas-e2852.firebaseio.com/projects.json')
+    .pipe(map((res: Response) => {
+      const projectDb = res.json();
+      const ids = Object.keys(res.json());
+
+console.log(projectDb)
+
+      const projects: Project[] = [];
+      for (const i of ids) {
+        projects.push(projectDb[i]);
+      }
+      this.projects = projects;
+ console.log(projects);
+      return projects as Project[];
+    })).subscribe(
+      (allprojects: Project[])=>{
+        this.projects = allprojects;
+        this.projectsChanged.next(this.projects.slice())
+      }
+    );
+  }
 
   getProjects(){
     return this.projects.slice();
   }
 
-  getProject(index:number){
+  getProject(projectId:string){
+    let index = this.projects.findIndex(item=>projectId===item.id);
+		console.log(index);
     return this.projects[index];
   }
 
@@ -84,27 +109,30 @@ export class ProjectService {
 
   addProjectToDatabase(project:Project){
     const token = this.authService.getToken();
-    let nextId = this.getProjects().length-1;
-    return this.http.put(`${baseUrl}/${nextId}/.json?auth=`+token, project);
+    
+    return this.http.put(`${baseUrl}/${project.id}/.json?auth=`+token, project);
   }
 
-  updateProject(index: number, newProject: Project){
+  updateProject(newProject: Project){
+    let index = this.projects.findIndex(item=>newProject.id===item.id);
+		console.log(index);
     this.projects[index]=newProject;
     this.projectsChanged.next(this.projects.slice());
   }
 
-  editProjectOnDatabase(projectId: number, newProject: Project){
+  editProjectOnDatabase(projectId: string, newProject: Project){
     const token = this.authService.getToken();
    
     return this.http.patch(`${baseUrl}/${projectId}/.json?auth=`+token, newProject);
   }
 
-  deleteProject(index:number){
+  deleteProject(projectId:string){
+    let index = this.projects.findIndex(item=>projectId===item.id);
     this.projects.splice(index,1);
     this.projectsChanged.next(this.projects.slice());
   }
 
-  deleteProjectOnDatabase(projectId:number){
+  deleteProjectOnDatabase(projectId:string){
     const token = this.authService.getToken();
     return this.http.delete(`${baseUrl}/${projectId}/.json?auth=`+token);
   }

@@ -22,18 +22,16 @@ export class DataStorageService {
 			.pipe(map(
 				(res: Response) => {
 					const ids = Object.keys(res);
-					console.log(res);
-					console.log(ids);
 
 					const projects : Project[] = res.json();
-					console.log(projects);
+
 					for (const project of projects) {
 						if(project==null)continue;
 						if (!project['ingredients']) {
 							project['ingredients'] = [];
 						}
 					}
-					console.log(projects);
+
 					return projects;
 				}
 			))

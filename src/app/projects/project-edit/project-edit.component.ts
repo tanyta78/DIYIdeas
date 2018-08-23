@@ -14,7 +14,7 @@ import { Response } from '@angular/http';
   styleUrls: ['./project-edit.component.css']
 })
 export class ProjectEditComponent implements OnInit {
-  id: number;
+  id: string;
   submitButtonText: string = 'Save';
   editMode:boolean= false;
   deleteMode:boolean= false;
@@ -31,7 +31,7 @@ export class ProjectEditComponent implements OnInit {
   ngOnInit() {
     this.route.params
       .subscribe((params: Params) => {
-        this.id = +params['id'];
+        this.id = params['id'];
         this.editMode = params['id'] != null;
         if (this.route.snapshot.url[1]) {
           this.deleteMode = this.route.snapshot.url[1].path == "delete"
@@ -55,12 +55,9 @@ export class ProjectEditComponent implements OnInit {
     );
     //can use only value because of equal names - use this in additing new project
     if (this.deleteMode) {
+      
       this.projectService.deleteProject(this.id);
-      // this.projectService.deleteProjectOnDatabase(this.id).subscribe((r) => {
-      //   this.dataStorageService.storeProjects();
-      //   this.router.navigate(['/projects']);
-
-      //  })
+   
       this.dataStorageService.storeProjects().subscribe(
         (res: Response) => {
           console.log(res);
@@ -69,7 +66,8 @@ export class ProjectEditComponent implements OnInit {
         }
       );
     } else if (this.editMode) {
-      this.projectService.updateProject(this.id, newProject);
+      newProject.id=this.id;
+      this.projectService.updateProject(newProject);
       this.projectService.editProjectOnDatabase(this.id, newProject).subscribe((r) => {
         console.log(r)
         this.onCancel();
