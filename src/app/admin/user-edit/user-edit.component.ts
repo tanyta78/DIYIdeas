@@ -70,6 +70,8 @@ export class UserEditComponent implements OnInit {
       );
     } else if (this.editMode) {
       newUser.id= this.route.snapshot.params['db'];
+      newUser.role=this.userForm.value['role'];
+      newUser.status=this.userForm.value['status'];
       this.authService.updateUser(newUser);
      
       this.authService.editUser(newUser).subscribe( 
@@ -89,6 +91,7 @@ export class UserEditComponent implements OnInit {
     this.onCancel();
 
   }
+  
   onCancel() {
     this.router.navigate(['../'], { relativeTo: this.route })
   }

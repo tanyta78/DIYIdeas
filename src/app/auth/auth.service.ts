@@ -31,17 +31,17 @@ export class AuthService {
 	getAllUsers() {
 		return this.http.get<User[]>(`${baseUrl}/.json`)
 			.pipe(map((userDb) => {
-				// const userDb = res.json();
 				const ids = Object.keys(userDb);
 
 				const users: User[] = [];
 				for (const i of ids) {
-					users.push(new User(i, userDb[i].email,
-						userDb[i].username, userDb[i].imageUrl));
+					let current = new User(i, userDb[i].email,
+						userDb[i].username, userDb[i].imageUrl);
+						current.status=userDb[i].status;
+						current.role = userDb[i].role;
+					users.push(current);
 				}
 				this.users = users;
-				console.log(users);
-				// return users as User[];
 				return users
 			})).subscribe(
 				(allUsers: User[]) => {

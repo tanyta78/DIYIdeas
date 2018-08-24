@@ -7,6 +7,7 @@ import { AdminStartComponent } from './admin-start/admin-start.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 
+
 const adminRoutes: Routes = [
 	{
 		path: '', component: AdminComponent, children: [

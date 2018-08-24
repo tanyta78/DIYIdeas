@@ -11,6 +11,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { UserItemComponent } from './user-list/user-item/user-item.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+
 @NgModule({
   imports: [
     CommonModule,
