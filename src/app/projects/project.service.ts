@@ -13,7 +13,7 @@ const baseUrl = 'https://diy-ideas-e2852.firebaseio.com/projects';
 @Injectable()
 export class ProjectService {
   projectsChanged = new Subject<Project[]>()
-
+  
   private projects: Project[] = [
     new Project(
     'Pop Tabs Bag',

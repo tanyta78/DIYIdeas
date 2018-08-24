@@ -15,6 +15,7 @@ import { UserService } from "../admin/user.service";
 import { SuccessInterceptor } from "./interceptors/success.interceptor";
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
+import { AdminGuard } from "../auth/admin.guard";
 
 @NgModule({
 	declarations: [
@@ -36,6 +37,7 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
 		DataStorageService,
 		AuthService,
 		AuthGuard,
+		AdminGuard,
 		// {
 		// 	provide: HTTP_INTERCEPTORS,
 		// 	useClass: SuccessInterceptor,
