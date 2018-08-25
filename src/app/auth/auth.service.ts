@@ -19,7 +19,7 @@ export class AuthService {
 	uid: string;
 	usersChanged = new Subject<User[]>()
 	userUid: string;
-	userStatus:string
+	userStatus: string
 
 	private users: User[] = []
 
@@ -38,8 +38,8 @@ export class AuthService {
 				for (const i of ids) {
 					let current = new User(i, userDb[i].email,
 						userDb[i].username, userDb[i].imageUrl);
-						current.status=userDb[i].status;
-						current.role = userDb[i].role;
+					current.status = userDb[i].status;
+					current.role = userDb[i].role;
 					users.push(current);
 				}
 				this.users = users;
@@ -80,7 +80,7 @@ export class AuthService {
 				this.addUser(user, password).subscribe((r) => {
 					this.addUserIn(user);
 					this.toastr.success(`User succesfully created`, 'Success!');
-					
+
 				})
 			}
 		)
@@ -96,7 +96,7 @@ export class AuthService {
 
 	updateUser(newUser: User) {
 		let index = this.users.findIndex(item => newUser.id === item.id);
-		
+
 		this.users[index] = newUser;
 		this.usersChanged.next(this.users.slice());
 	}
@@ -137,7 +137,6 @@ export class AuthService {
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(res => {
 				this.uid = res.user.uid;
-				this.toastr.success(`${res.user.email} logged in`, 'Success!');
 				firebase.auth().currentUser.getIdToken()
 					.then(
 						(token: string) => {
@@ -145,7 +144,13 @@ export class AuthService {
 
 							this.getById(this.uid).subscribe(
 								(data) => {
-									this.userStatus=data.status;
+									this.userStatus = data.status;
+									if(this.userStatus==='deleted'){
+										this.toastr.warning(`Your profile is deleted`, 'Warning!');
+									}else{
+										this.toastr.success(`${res.user.email} logged in`, 'Success!');
+									}
+									
 									this.isAdmin = data.role === 'admin' ? true : false;
 									this.router.navigate(['/'])
 								}
@@ -174,13 +179,16 @@ export class AuthService {
 	}
 
 	isAuthenticated() {
-		if(this.token === null){
+		
+		if (this.token != null) {
+			if (this.userStatus === 'deleted') {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
 			return false
-		}else if(this.userStatus==='deleted'){
-			return false;
-		}else{
-			return true;
-		}
+		};
 	}
 
 	isAdminUser(userId: string) {
