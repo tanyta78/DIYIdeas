@@ -17,10 +17,7 @@ const projectsRoutes: Routes = [
       { path: ':id/edit', component: ProjectEditComponent, canActivate: [AuthGuard] },
       { path: ':id/delete', component: ProjectEditComponent, canActivate: [AuthGuard] },
     ]
-  },
-  {
-    path:'myProjects',component: MyProjectsComponent, canActivate: [AuthGuard]
-  }];
+  }]
 
 @NgModule({
   imports: [

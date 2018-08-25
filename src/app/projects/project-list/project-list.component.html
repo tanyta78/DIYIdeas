@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-xs-12" >
+	<div class="col-xs-12" *ngIf="isLogginUser" >
 		<button class="btn btn-success" (click)="onNewProject()">New Project</button>
 	</div>
 	<hr>
@@ -7,7 +7,9 @@
 		<!-- Search form -->
 		<input class="form-control" type="text" placeholder="Search by project name" aria-label="Search" [(ngModel)]="filteredStatus">
 	</div>
-	
+	<div class="col-xs-12" *ngIf="isLogginUser">
+		<button class="btn btn-success" (click)="onMyProjects()" >My Projects</button>
+	</div>
 </div>
 <hr>
 <div class="row">

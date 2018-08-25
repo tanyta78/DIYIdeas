@@ -82,6 +82,25 @@ export class ProjectService {
     );
   }
 
+  getMyProjects(){
+    return this.http.get<Project[]>('https://diy-ideas-e2852.firebaseio.com/projects.json')
+    .pipe(map((projectDb) => {
+      const ids = Object.keys(projectDb);
+      const projects: Project[] = [];
+      for (const i of ids) {
+        if(projectDb[i].authorId === this.authService.uid)
+        projects.push(projectDb[i]);
+      }
+      this.projects = projects;
+      return projects as Project[];
+    })).subscribe(
+      (allprojects: Project[])=>{
+        this.projects = allprojects;
+        this.projectsChanged.next(this.projects.slice())
+      }
+    );
+  }
+
   getProjects(){
     return this.projects.slice();
   }

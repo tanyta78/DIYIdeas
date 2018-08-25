@@ -19,6 +19,7 @@ export class AuthService {
 	uid: string;
 	usersChanged = new Subject<User[]>()
 	userUid: string;
+	userStatus:string
 
 	private users: User[] = []
 
@@ -144,7 +145,7 @@ export class AuthService {
 
 							this.getById(this.uid).subscribe(
 								(data) => {
-
+									this.userStatus=data.status;
 									this.isAdmin = data.role === 'admin' ? true : false;
 									this.router.navigate(['/'])
 								}
@@ -173,7 +174,13 @@ export class AuthService {
 	}
 
 	isAuthenticated() {
-		return this.token != null;
+		if(this.token === null){
+			return false
+		}else if(this.userStatus==='deleted'){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	isAdminUser(userId: string) {
