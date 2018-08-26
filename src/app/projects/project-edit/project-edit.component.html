@@ -19,6 +19,11 @@
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" class="form-control" formControlName="name" [attr.disabled]="deleteMode ? '' : null">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Project name is required.
+              </div>              
+            </div>
           </div>
         </div>
       </div>
@@ -26,7 +31,12 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="imageUrl">Image URL</label>
-            <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" [attr.disabled]="deleteMode ? '' : null" #imageUrl>
+            <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" [attr.disabled]="deleteMode ? '' : null" >
+            <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="alert alert-danger" >
+              <div *ngIf="imageUrl.errors.required">
+                Image is required.
+              </div>              
+            </div>
           </div>
         </div>
       </div>
@@ -40,7 +50,12 @@
           <div class="form-group">
             <label for="description">Description</label>
             <textarea type="text" id="description" class="form-control" rows="6" formControlName="description" [attr.disabled]="deleteMode ? '' : null">
-              </textarea>
+            </textarea>
+            <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger" >
+              <div *ngIf="description.errors.required">
+                Description is required.
+              </div>              
+            </div>
           </div>
         </div>
       </div>
@@ -61,7 +76,13 @@
                 class="btn btn-danger"
                (click)="onDeleteIngredient(i)" [attr.disabled]="deleteMode ? '' : null">X</button>
             </div>
+           
           </div>
+          <div *ngIf="projectForm.invalid && (projectForm.dirty || projectForm.touched)" class="alert alert-danger" >
+              <div *ngIf="!projectForm.valid">
+                Amount must be a positive number.
+              </div>              
+            </div>
           <hr>
           <div class="row">
             <div class="col-xs-12">

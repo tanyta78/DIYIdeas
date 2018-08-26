@@ -131,7 +131,7 @@ export class UserEditComponent implements OnInit {
         'email': new FormControl(email, [Validators.required, Validators.email]),
         'status': new FormControl(status),
         'role': new FormControl(role),
-        'password': new FormControl(password,[Validators.required]),
+        'password': new FormControl(password,[Validators.required,Validators.minLength(6)]),
       });
     }
   }
@@ -139,5 +139,11 @@ export class UserEditComponent implements OnInit {
   isAdmin() {
     return this.authService.isAdmin;
   };
+
+  get username() { return this.userForm.get('username'); }
+  get imageUrl() { return this.userForm.get('imageUrl'); }
+  get email() { return this.userForm.get('email'); }
+  get password() { return this.userForm.get('password'); }
+
 
 }

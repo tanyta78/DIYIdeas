@@ -144,4 +144,8 @@ export class ProjectEditComponent implements OnInit {
     });
   }
 
+  get name() { return this.projectForm.get('name'); }
+  get imageUrl() { return this.projectForm.get('imageUrl'); }
+  get description() { return this.projectForm.get('description'); }
+
 }

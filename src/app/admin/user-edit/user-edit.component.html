@@ -1,24 +1,22 @@
 <div class="row" *ngIf="userForm">
   <div class="col-xs-12">
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" >
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-xs 12">
-          <button 
-            type="submit"
-            class="btn btn-success" 
-            [disabled] = "!userForm.valid">{{submitButtonText}}</button>
-          <button 
-            type="button"
-            class="btn btn-danger"
-            (click)="onCancel()"
-            >Cancel</button>
+          <button type="submit" class="btn btn-success" [disabled]="!userForm.valid">{{submitButtonText}}</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" class="form-control" formControlName="username" [attr.disabled]="deleteMode ? '' : null" #username>
+            <input type="text" id="username" class="form-control" formControlName="username" [attr.disabled]="deleteMode ? '' : null">
+            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
+              <div *ngIf="username.errors.required">
+                Username is required.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -26,7 +24,12 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="imageUrl">Profile Image URL</label>
-            <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" [attr.disabled]="deleteMode ? '' : null" #imageUrl>
+            <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" [attr.disabled]="deleteMode ? '' : null">
+            <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="alert alert-danger">
+              <div *ngIf="imageUrl.errors.required">
+                Image is required.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -39,7 +42,15 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="email">User email</label>
-            <input type="text" id="email" class="form-control" formControlName="email" [attr.disabled]="deleteMode ? '' : null" #email>
+            <input type="text" id="email" class="form-control" formControlName="email" [attr.disabled]="deleteMode ? '' : null">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+              <div *ngIf="email.errors.required">
+                Email is required.
+              </div>
+              <div *ngIf="email.errors">
+                Please insert a valid email!
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -48,30 +59,37 @@
           <div class="col-xs-12">
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="password" class="form-control" formControlName="password" #password>
+              <input type="password" id="password" class="form-control" formControlName="password">
+              <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                <div *ngIf="password.errors.required">
+                  Password is required.
+                </div>
+                <div *ngIf="password.errors.minlength">
+                  Password must have at least 6 characters
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </ng-template>
       <ng-template [ngIf]="isAdmin()">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="status">User status</label>
-            <input type="text" id="status" class="form-control" formControlName="status" [attr.disabled]="deleteMode ? '' : null" #status>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="status">User status</label>
+              <input type="text" id="status" class="form-control" formControlName="status" [attr.disabled]="deleteMode ? '' : null" #status>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="role">User role</label>
-            <input type="text" id="role" class="form-control" formControlName="role" [attr.disabled]="deleteMode ? '' : null" #role>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="role">User role</label>
+              <input type="text" id="role" class="form-control" formControlName="role" [attr.disabled]="deleteMode ? '' : null" #role>
+            </div>
           </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
     </form>
   </div>
 </div>
-
