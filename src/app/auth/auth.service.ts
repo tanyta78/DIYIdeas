@@ -85,7 +85,9 @@ export class AuthService {
 			}
 		)
 			.catch(
-				error => console.log(error)
+				error => {
+					this.toastr.warning(error.message, 'Warning!');
+					console.log(error)}
 			);;
 	}
 
@@ -120,11 +122,32 @@ export class AuthService {
 			.then(data => {
 				console.log(data);
 				//TODO: save new created user in users db collection
-				this.toastr.success(`Successfull registraion`, 'Success!');
-				this.router.navigate(['/signin']);
+				this.userUid = data.user.uid;
+				let user = new User(this.userUid, email,
+					email, '');
+					firebase.auth().signInWithEmailAndPassword(email,password)
+					.then(res=>{
+						firebase.auth().currentUser.getIdToken()
+						.then(
+							(token: string) => {
+								this.token = token
+								this.userStatus = user.status;
+								this.isAdmin = user.role === 'admin' ? true : false;
+								this.addUser(user, password).subscribe((r) => {
+									console.log(user)
+									this.addUserIn(user);
+									this.toastr.success(`Successfull registraion`, 'Success!');
+									this.router.navigate(['/'])
+							})
+							});
+					
+				
+				})
 			})
 			.catch(
-				error => console.log(error)
+				error => {
+					this.toastr.warning(error.message, 'Warning!');
+					console.log(error)}
 			);
 	}
 

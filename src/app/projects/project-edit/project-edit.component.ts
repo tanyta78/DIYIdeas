@@ -20,6 +20,7 @@ export class ProjectEditComponent implements OnInit {
   editMode:boolean= false;
   deleteMode:boolean= false;
   projectForm: FormGroup;
+  authorId:string;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,6 +72,7 @@ export class ProjectEditComponent implements OnInit {
       );
     } else if (this.editMode) {
       newProject.id=this.id;
+      newProject.authorId=this.authorId;
       this.projectService.updateProject(newProject);
       this.projectService.editProjectOnDatabase(this.id, newProject).subscribe((r) => {
         console.log(r);
@@ -123,6 +125,7 @@ export class ProjectEditComponent implements OnInit {
       projectName = project.name;
       projectImageUrl = project.imageUrl;
       projectDescription = project.description;
+      this.authorId=project.authorId;
       if (project['ingredients']) {
         for (const ing of project.ingredients) {
           projectIngredients.push(
