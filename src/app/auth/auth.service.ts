@@ -190,6 +190,7 @@ export class AuthService {
 		firebase.auth().signOut();
 		this.toastr.success(`Successful logged out`, 'Success!');
 		this.token = null;
+		this.isAdmin=false;
 		this.router.navigate(['/']);
 	}
 
