@@ -121,8 +121,9 @@ export class AuthService {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(data => {
 				console.log(data);
-				//TODO: save new created user in users db collection
+				
 				this.userUid = data.user.uid;
+				this.uid=this.userUid;
 				let user = new User(this.userUid, email,
 					email, '');
 					firebase.auth().signInWithEmailAndPassword(email,password)
